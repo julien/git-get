@@ -40,11 +40,26 @@ get_token () {
 	return 1
 }
 
+is_git_dir () {
+	local dir=
+	if [[ ! -z "$1" ]]; then
+		dir="$1"
+	else
+		dir=$PWD
+	fi
+
+	local gitdir=$(find "$dir" -type d -name ".git")
+	if [[ -z "$gitdir" ]] ; then
+		err "No .git directory found in $dir."
+		return 1
+	fi
+
+	return 0
+}
+
 main () {
-	get_token
-
-
-	# allow passing these
+	# get_token
+	# Allow passing these:
 	# -t (title or last commit if not specificed)
 	# -from (source branch or current branch if not specificed)
 	# -to (destination branch or master if not specified)
@@ -53,13 +68,12 @@ main () {
 	# -to-remote (destination remote (optional))
 
 
-	# 1. Check if we're in a .git
+	# 1. Check if we're in a .git directory
 	# 2. Parse arguments
 	# 3. Set default options
 	# 4. Check credentials (this could also be part of step 1.)
 	# 5. Send a pull request
 	# Next steps: list pull request, get pull request, close pull request (optional)
-
 }
 
 main $@
