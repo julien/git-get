@@ -8,7 +8,7 @@ err() {
 	echo "$@" >&2
 }
 
-get_token () {
+get_token() {
 	if [[ -f "$HOME/.git-pr-token" ]]; then
 		local temp_token=$(cat "$HOME/.git-pr-token")
 		if [[ ! -z "$temp_token" ]] ; then
@@ -40,7 +40,7 @@ get_token () {
 	return 1
 }
 
-is_git_dir () {
+is_git_dir() {
 	local dir=
 	if [[ ! -z "$1" ]]; then
 		dir="$1"
@@ -57,23 +57,35 @@ is_git_dir () {
 	return 0
 }
 
-main () {
-	# get_token
-	# Allow passing these:
-	# -t (title or last commit if not specificed)
-	# -from (source branch or current branch if not specificed)
-	# -to (destination branch or master if not specified)
-	# -c (description (optional))
-	# -from-remote (source remote (optional))
-	# -to-remote (destination remote (optional))
+usage() {
+	echo
+	echo "Usage: git-pr.sh [command]"
+	echo
+	echo "Available commands: "
+	echo
+	echo "-h Print help."
+	echo "-l List current pull requests."
+	echo
+}
 
-
-	# 1. Check if we're in a .git directory
-	# 2. Parse arguments
-	# 3. Set default options
-	# 4. Check credentials (this could also be part of step 1.)
-	# 5. Send a pull request
-	# Next steps: list pull request, get pull request, close pull request (optional)
+main() {
+	while getopts ":hl" opt; do
+		case ${opt} in
+			h)
+				usage
+				exit 0
+				;;
+			l)
+				# List pull requests
+				exit 0
+				;;
+			\?)
+				usage
+				exit 1
+				;;
+		esac
+	done
+	shift $((OPTIND -1))
 }
 
 main $@
