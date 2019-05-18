@@ -3,7 +3,7 @@ set -o errexit
 set -o pipefail
 
 __main() {
-	local remote, project, url, resp, patch_urls, patches
+	local remoteeroject url resp patch_urls patches
 
 	remote=$(git remote -v | grep -Eo 'origin\s.*\(fetch\)')
 	project=$(echo "$remote" | grep -Eo '(:)(.*\.git)' | sed s/:// | sed s/\.git$// )
