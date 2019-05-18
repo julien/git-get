@@ -3,12 +3,15 @@ set -o errexit
 set -o pipefail
 
 __main() {
-	local remoteeroject url resp patch_urls patches
-
+	local remote
 	remote=$(git remote -v | grep -Eo 'origin\s.*\(fetch\)')
+	local project
 	project=$(echo "$remote" | grep -Eo '(:)(.*\.git)' | sed s/:// | sed s/\.git$// )
+	local url
 	url="https://api.github.com/repos/$project/pulls"
+	local resp
 	resp=$(curl -L -s -f "$url")
+	local patch_urls
 	patch_urls=$(echo "$resp" |\
 		python -m json.tool |\
 		grep -Eo '\"patch_url\":\s.*"' |\
@@ -19,6 +22,7 @@ __main() {
 	mkdir -p "patches"
 	cd "patches"
 
+	local patches
 	patches=$(echo "$patch_urls" | tr '\n' ' ')
 
 	OIFS=$IFS
