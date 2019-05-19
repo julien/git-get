@@ -74,7 +74,7 @@ __main() {
 				if [[ ! -f "patches/$patch" ]] ; then
 					curl "$x" -L -s -o "patches/$patch"
 				else
-					echo "Skipping $patch, already downloaded."
+					echo "skipping $patch, already downloaded."
 				fi
 			done
 			IFS=$OIFS
