@@ -1,2 +1,13 @@
 A simple script to get github pull requests as patch files.
 
+Usage:
+
+git get COMMAND
+
+Available commands:
+
+fetch [NUMBER] Fetch pull request #[NUMBER]
+ls             List pull requests
+patches        Download patches
+
+
