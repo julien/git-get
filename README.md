@@ -1,7 +1,12 @@
+git-get
+---
+
 A simple script to handle github pull requests.
 
-Usage:
 
+### Usage:
+
+```sh
 git get COMMAND
 
 Available commands:
@@ -9,5 +14,6 @@ Available commands:
 fetch [NUMBER] Fetch pull request #[NUMBER]
 ls             List pull requests
 patches        Download patches
+```
 
 
