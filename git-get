@@ -20,7 +20,7 @@ __main() {
 	local current_branch
 	current_branch=$(git rev-parse --abbrev-ref HEAD)
 
-	if ! `$(echo "$remote" | grep -Eo 'github.com' >/dev/null)` ; then
+	if ! echo "$remote" | grep -Eo 'github.com' >/dev/null ; then
 		echo "fatal: remote doesn't seem to be a github.com project"
 		exit 1
 	fi
@@ -80,11 +80,9 @@ __main() {
 			IFS=$OIFS
 			;;
 		ls)
-			local url
-			url="https://api.github.com/repos/$project/pulls"
+			local url="https://api.github.com/repos/$project/pulls"
 			local resp
 			resp=$(curl -L -s -f "$url")
-
 
 			local script
 			script=$(cat <<- EOF
@@ -97,7 +95,7 @@ __main() {
 			local prs
 			prs=$(echo "$resp" | python -c "$script")
 
-			if [[ ! -z "$prs" ]]; then
+			if [[ -n "$prs" ]]; then
 				echo "listing pull requests for $project"
 				echo
 				echo "$prs"
