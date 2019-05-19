@@ -11,6 +11,11 @@ __main() {
 	local remote
 	remote=$(git remote -v | grep -Eo 'origin\s.*\(fetch\)')
 
+	if ! echo "$remote" | grep -Eo 'github.com' >/dev/null ; then
+		echo "fatal: remote doesn't seem to be a github.com project"
+		exit 1
+	fi
+
 	local remote_name
 	remote_name=$(echo "$remote" | grep -Eo '^\w+')
 
@@ -19,11 +24,6 @@ __main() {
 
 	local current_branch
 	current_branch=$(git rev-parse --abbrev-ref HEAD)
-
-	if ! echo "$remote" | grep -Eo 'github.com' >/dev/null ; then
-		echo "fatal: remote doesn't seem to be a github.com project"
-		exit 1
-	fi
 
 	local cmd=$1
 
