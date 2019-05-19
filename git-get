@@ -10,21 +10,30 @@ __main() {
 
 	local remote
 	remote=$(git remote -v | grep -Eo 'origin\s.*\(fetch\)')
+
+	local remote_name
+	remote_name=$(echo "$remote" | grep -Eo '^\w+')
+
 	local project
 	project=$(echo "$remote" | grep -Eo '(:)(.*\.git)' | sed s/:// | sed s/\.git$// )
+
 	local current_branch
 	current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+	if ! `$(echo "$remote" | grep -Eo 'github.com' >/dev/null)` ; then
+		echo "fatal: remote doesn't seem to be a github.com project"
+		exit 1
+	fi
 
 	local cmd=$1
 
 	case "$cmd" in
 		fetch)
-			# Check for 2nd argument
 			if [[ -z "$2" ]]; then
-				echo "fatal: You need to pass a pull request number"
+				echo "fatal: you need to pass a pull request number"
 				exit 1
 			fi
-			# Check if 2nd argument is a number
+
 			if [ -n "$2" ] && [ "$2" -eq "$2" ] 2>/dev/null; then
 				local number=$2
 
@@ -76,9 +85,6 @@ __main() {
 			local resp
 			resp=$(curl -L -s -f "$url")
 
-			echo
-			echo "Listing pull requests for $project"
-			echo
 
 			local script
 			script=$(cat <<- EOF
@@ -91,8 +97,12 @@ __main() {
 			local prs
 			prs=$(echo "$resp" | python -c "$script")
 
-			echo "$prs"
-			echo
+			if [[ ! -z "$prs" ]]; then
+				echo "listing pull requests for $project"
+				echo
+				echo "$prs"
+				echo
+			fi
 			;;
 		*)
 			__usage
