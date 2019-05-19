@@ -3,37 +3,90 @@ set -o errexit
 set -o pipefail
 
 __main() {
+
+
+
+
 	local remote
 	remote=$(git remote -v | grep -Eo 'origin\s.*\(fetch\)')
+	local remote_name
+	remote_name=$(echo "$remote" | grep -Eo '^\w+')
 	local project
 	project=$(echo "$remote" | grep -Eo '(:)(.*\.git)' | sed s/:// | sed s/\.git$// )
+	local current_branch
+	current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+
+	# Get patches
+
+	# local url
+	# url="https://api.github.com/repos/$project/pulls"
+	# local resp
+	# resp=$(curl -L -s -f "$url")
+	# local patch_urls
+	# patch_urls=$(echo "$resp" |\
+	# 	python -m json.tool |\
+	# 	grep -Eo '\"patch_url\":\s.*"' |\
+	# 	sed s/\"patch_url\":\ // |\
+	# 	sed s/\"//g)
+
+	# mkdir -p "patches"
+
+	# local patches
+	# patches=$(echo "$patch_urls" | tr '\n' ' ')
+
+	# OIFS=$IFS
+	# IFS=' '
+	# for x in $patches
+	# do
+	#   local patch
+	#   patch=$(echo "$x" | grep -Eo '[[:digit:]]*\.patch')
+	#   if [[ ! -f "patches/$patch" ]] ; then
+	# 		curl "$x" -L -s -o "patches/$patch"
+	#   else
+	#     echo "Skipping $patch, already downloaded."
+	#   fi
+	# done
+	# IFS=$OIFS
+
+
+
+
+	# Get a PR (PR #4 in this example)
+	# local number=4
+
+	# local pr
+	# pr="https://github.com/$project/pull/$number.patch"
+
+	# local branch
+	# branch="pull/$number"
+
+	# git fetch "$remote_name" "pull/$number/head:$branch"
+	# git checkout "$branch"
+	# git branch --set-upstream-to="$current_branch" "$branch"
+
+	# get get ls
+	# git get patches # Gets all patches
+	# git get NUMBER  # Get pull request NUMBER
+
+
+	# To list PRs
+	#
 	local url
 	url="https://api.github.com/repos/$project/pulls"
 	local resp
 	resp=$(curl -L -s -f "$url")
-	local patch_urls
-	patch_urls=$(echo "$resp" |\
+	local numbers=$(echo "$resp" | grep -Eo '\"number\":\s[[:digit:]]*' | grep -Eo '[[:digit:]]*')
+	local titles
+	titles=$(echo "$resp" |\
 		python -m json.tool |\
-		grep -Eo '\"patch_url\":\s.*"' |\
-		sed s/\"patch_url\":\ // |\
+		grep -Eo '\"title\":\s.*"' |\
+		sed s/\"title\":\ // |\
 		sed s/\"//g)
 
-	pushd "$PWD"
-	mkdir -p "patches"
-	cd "patches"
+	echo "$numbers" "$titles"
 
-	local patches
-	patches=$(echo "$patch_urls" | tr '\n' ' ')
 
-	OIFS=$IFS
-	IFS=' '
-	for x in $patches
-	do
-		curl -L -O "$x"
-	done
-	IFS=$OIFS
-
-	popd
 }
 
 __main "$@"
