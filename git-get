@@ -8,8 +8,14 @@ __main() {
 		exit 1
 	fi
 
+
+	local preferred_remote="origin"
+	if [ -n "$GIT_GET_REMOTE" ] ; then
+		preferred_remote="$GIT_GET_REMOTE"
+	fi
+
 	local remote
-	remote=$(git remote -v | grep -Eo 'origin\s.*\(fetch\)')
+	remote=$(git remote -v | grep -Eo "$preferred_remote\s.*\(fetch\)")
 
 	if ! echo "$remote" | grep -Eo 'github.com' >/dev/null ; then
 		echo "fatal: remote doesn't seem to be a github.com project"
