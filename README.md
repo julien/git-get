@@ -9,7 +9,6 @@ A simple script to handle github pull requests.
 - Clone this repo:
 
 ```sh
-cd /tmp
 git clone https://github.com/julien/git-get.git
 ```
 
