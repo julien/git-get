@@ -48,7 +48,7 @@ __main() {
 
 				git fetch "$remote_name" "pull/$number/head:$branch"
 				git checkout "$branch"
-				git branch --set-upstream-to="$current_branch" "$branch"
+				git branch "$branch"
 			else
 				echo "fatal: \"$2\" is not a number"
 				exit 1
