@@ -8,7 +8,6 @@ __main() {
 		exit 1
 	fi
 
-
 	local preferred_remote="origin"
 	if [ -n "$GIT_GET_REMOTE" ] ; then
 		preferred_remote="$GIT_GET_REMOTE"
