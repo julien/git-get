@@ -27,9 +27,6 @@ __main() {
 	local project
 	project=$(echo "$remote" | grep -Eo '(:)(.*\.git)' | sed s/:// | sed s/\.git$// )
 
-	local current_branch
-	current_branch=$(git rev-parse --abbrev-ref HEAD)
-
 	local cmd=$1
 
 	case "$cmd" in
