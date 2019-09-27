@@ -54,7 +54,13 @@ __main() {
 			local url
 			url="https://api.github.com/repos/$project/pulls"
 			local resp
-			resp=$(curl -L -s -f "$url")
+
+			if command -v curl >/dev/null ; then
+				resp=$(curl -L -s -f "$url")
+			elif  command -v wget >/dev/null ; then
+				resp=$(wget --quiet -O - "$url")
+			fi
+
 			local patch_urls
 			patch_urls=$(echo "$resp" |\
 				python -m json.tool |\
@@ -74,7 +80,13 @@ __main() {
 				local patch
 				patch=$(echo "$x" | grep -Eo '[[:digit:]]*\.patch')
 				if [[ ! -f "patches/$patch" ]] ; then
-					curl "$x" -L -s -o "patches/$patch"
+
+					if command -v curl >/dev/null ; then
+						curl "$x" -L -s -o "patches/$patch"
+					elif  command -v wget >/dev/null ; then
+						wget --quiet "$x" -o "patches/$patch"
+					fi
+
 				else
 					echo "skipping $patch, already downloaded."
 				fi
@@ -84,7 +96,12 @@ __main() {
 		ls)
 			local url="https://api.github.com/repos/$project/pulls"
 			local resp
-			resp=$(curl -L -s -f "$url")
+
+			if command -v curl >/dev/null ; then
+				resp=$(curl -L -s -f "$url")
+			elif  command -v wget >/dev/null ; then
+				resp=$(wget --quiet -O - "$url")
+			fi
 
 			local script
 			script=$(cat <<- EOF
