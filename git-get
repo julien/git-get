@@ -141,7 +141,7 @@ __main() {
 			url="https://github.com/$target/$project_name/compare/master...$source:$branch"
 
 			if command -v open >/dev/null ; then
-				xdg-open "$url"
+				open "$url"
 			elif  command -v xdg-open >/dev/null ; then
 				xdg-open "$url"
 			fi
