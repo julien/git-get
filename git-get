@@ -140,7 +140,12 @@ __main() {
 			local url
 			url="https://github.com/$target/$project_name/compare/master...$source:$branch"
 
-			xdg-open "$url"
+			if command -v open >/dev/null ; then
+				xdg-open "$url"
+			elif  command -v xdg-open >/dev/null ; then
+				xdg-open "$url"
+			fi
+
 		;;
 		*)
 			__usage
