@@ -25,6 +25,7 @@ Available commands:
 fetch [NUMBER] Fetch pull request #[NUMBER]
 ls             List pull requests
 patches        Download patches
+send [USER]    Open URL to compare and create PR of current branch to #[USER]
 ```
 
 ### Limitations:
