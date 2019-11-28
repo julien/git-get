@@ -163,7 +163,7 @@ __usage() {
 	echo "fetch NUMBER   Fetch pull request NUMBER"
 	echo "ls             List pull requests"
 	echo "patches        Download patches"
-	echo "send USER      Open URL to compare and create PR of current branch to USER"
+	echo "send USER      Open URL to create a pull request"
 	echo
 }
 
