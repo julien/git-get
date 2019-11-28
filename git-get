@@ -121,18 +121,19 @@ __main() {
 			fi
 			;;
 		send)
-			if [[ -z "$2" ]]; then
-				echo "fatal: you need to pass a github username"
-				exit 1
-			fi
+			local source
+			source=$(echo "$remote" | grep -Eo "(github.com)(:|\/+)(\w+)" | sed "s/github.com.//")
 
-			local target=$2
+			local target
+
+			if [[ -z "$2" ]]; then
+				target=$source
+			else
+				target=$2
+			fi
 
 			local branch
 			branch=$(git branch | grep "\*" | cut -d ' ' -f2)
-
-			local source
-			source=$(echo "$remote" | grep -Eo "(github.com)(:|\/+)(\w+)" | sed "s/github.com.//")
 
 			local project_name
 			project_name=$(echo "$project" | sed "s/\w\+\///")
@@ -140,7 +141,7 @@ __main() {
 			local url
 			url="https://github.com/$target/$project_name/compare/master...$source:$branch"
 
-			if command -v open >/dev/null ; then
+			if command -v open >/dev/null | grep -v "alias" ; then
 				open "$url"
 			elif  command -v xdg-open >/dev/null ; then
 				xdg-open "$url"
@@ -163,7 +164,7 @@ __usage() {
 	echo "fetch NUMBER   Fetch pull request NUMBER"
 	echo "ls             List pull requests"
 	echo "patches        Download patches"
-	echo "send USER      Open URL to create a pull request"
+	echo "send [USER]    Open URL to create a pull request"
 	echo
 }
 
