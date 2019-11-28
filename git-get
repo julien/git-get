@@ -122,7 +122,7 @@ __main() {
 			;;
 		send)
 			if [[ -z "$2" ]]; then
-				echo "fatal: you need to pass a GitHub username"
+				echo "fatal: you need to pass a github username"
 				exit 1
 			fi
 
