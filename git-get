@@ -120,6 +120,27 @@ __main() {
 				echo
 			fi
 			;;
+		send)
+			if [[ -z "$2" ]]; then
+				echo "fatal: you need to pass a GitHub username"
+				exit 1
+			fi
+				local target=$2
+
+				local branch
+				branch=$(git branch | grep "\*" | cut -d ' ' -f2)
+
+				local source
+				source=$(echo "$remote" | grep -Eo "(github.com)(:|\/+)(\w+)" | sed "s/github.com.//")
+
+				local project_name
+				project_name=$(echo "$project" | sed "s/\w\+\///")
+
+				local url
+				url="https://github.com/$target/$project_name/compare/master...$source:$branch"
+
+				xdg-open "$url"
+			;;
 		*)
 			__usage
 			exit 1
@@ -136,6 +157,7 @@ __usage() {
 	echo "fetch NUMBER   Fetch pull request NUMBER"
 	echo "ls             List pull requests"
 	echo "patches        Download patches"
+	echo "send USER      Open URL to compare and create PR of current branch to USER"
 	echo
 }
 
