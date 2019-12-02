@@ -125,11 +125,17 @@ __main() {
 			source=$(echo "$remote" | grep -Eo "(github.com)(:|\/+)(\w+)" | sed "s/github.com.//")
 
 			local target
-
 			if [[ -z "$2" ]]; then
 				target=$source
 			else
 				target=$2
+			fi
+
+			local target_branch
+			if [[ -z "$3" ]]; then
+				target_branch="master"
+			else
+				target_branch=$3
 			fi
 
 			local branch
@@ -139,7 +145,7 @@ __main() {
 			project_name=$(echo "$project" | sed "s/\w\+\///")
 
 			local url
-			url="https://github.com/$target/$project_name/compare/master...$source:$branch"
+			url="https://github.com/$target/$project_name/compare/$target_branch...$source:$branch"
 
 			if command -v open >/dev/null | grep -v "alias" ; then
 				open "$url"
