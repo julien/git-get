@@ -106,7 +106,7 @@ __main() {
 			script=$(cat <<- EOF
 			import sys, json;
 			ls = json.load(sys.stdin)
-			for l in ls: print('{0} {1}\n - {2}\n'.format(l['number'], l['title'], l['url']))
+			for l in ls: print('{0} {1}\n - {2}\n'.format(l['number'], l['title'], l['html_url']))
 			EOF
 			)
 
