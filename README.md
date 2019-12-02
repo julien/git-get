@@ -22,10 +22,10 @@ git get COMMAND
 
 Available commands:
 
-fetch [NUMBER] Fetch pull request #[NUMBER]
-ls             List pull requests
-patches        Download patches
-send [USER]    Open URL to compare and create PR of current branch to #[USER]
+fetch NUMBER           Fetch pull request NUMBER
+ls                     List pull requests
+patches                Download patches
+send [USER][BRANCH]    Open URL to create a pull request
 ```
 
 ### Limitations:
