@@ -24,8 +24,8 @@ __main() {
 	local remote_name
 	remote_name=$(git remote)
 
-	local project
-	project=$(basename "$remote" ".${remote##*.}" )
+	local owner_repo
+	owner_repo=$(echo "$remote" | grep -Eo '(:)(.*\.git)' | sed s/:// | sed s/\.git$//)
 
 	local cmd=$1
 
@@ -51,7 +51,7 @@ __main() {
 			;;
 		patches)
 			local url
-			url="https://api.github.com/repos/$project/pulls"
+			url="https://api.github.com/repos/$owner_repo/pulls"
 			local resp
 
 			if command -v curl >/dev/null ; then
@@ -93,7 +93,7 @@ __main() {
 			IFS=$OIFS
 			;;
 		ls)
-			local url="https://api.github.com/repos/$project/pulls"
+			local url="https://api.github.com/repos/$owner_repo/pulls"
 			local resp
 
 			if command -v curl >/dev/null ; then
@@ -114,13 +114,16 @@ __main() {
 			prs=$(echo "$resp" | python -c "$script")
 
 			if [[ -n "$prs" ]]; then
-				echo "listing pull requests for $project"
+				echo "listing pull requests for $owner_repo"
 				echo
 				echo "$prs"
 				echo
 			fi
 			;;
 		send)
+			local project
+			project=$(basename "$remote" ".${remote##*.}" )
+
 			local source
 			source=$(echo "$remote" | grep -Eo "(github.com)(:|\/+)(\w+)" | sed "s/github.com.//")
 
