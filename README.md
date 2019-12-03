@@ -30,6 +30,6 @@ send [USER][BRANCH]    Open URL to create a pull request
 
 ### Limitations:
 
-At the moment, this only works for github projects
+Only works for github projects
 
 
