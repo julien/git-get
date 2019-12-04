@@ -13,19 +13,19 @@ __main() {
 		preferred_remote="$GIT_GET_REMOTE"
 	fi
 
-	local remotecfg
-	remotecfg=$(git remote -v | grep -Eo "$preferred_remote\s.*\(fetch\)")
+	local remote_cfg
+	remote_cfg=$(git remote -v | grep -Eo "$preferred_remote\s.*\(fetch\)")
 
-	if ! echo "$remotecfg" | grep -Eo 'github.com' >/dev/null ; then
+	if ! echo "$remote_cfg" | grep -Eo 'github.com' >/dev/null ; then
 		echo "fatal: remote doesn't seem to be a github.com project"
 		exit 1
 	fi
 
 	local remote
-	remote=$(echo "$remotecfg" | grep -Eo "^\w+")
+	remote=$(echo "$remote_cfg" | grep -Eo "^\w+")
 
 	local user
-	user=$(echo "$remotecfg" | grep -Eo "github.com.*\/" | sed s/github.com// | sed s:/::g | sed s/://)
+	user=$(echo "$remote_cfg" | grep -Eo "github.com.*\/" | sed s/github.com// | sed s:/::g | sed s/://)
 
 	local remote_url
 	remote_url=$(git remote get-url "$remote")
