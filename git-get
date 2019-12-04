@@ -159,11 +159,11 @@ __main() {
 			elif  command -v xdg-open >/dev/null ; then
 				xdg-open "$url"
 			fi
-		;;
+			;;
 		*)
-		__usage
-		exit 1
-		;;
+			__usage
+			exit 1
+			;;
 	esac
 }
 
