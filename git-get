@@ -25,7 +25,7 @@ __main() {
 	remote=$(echo "$remote_cfg" | grep -Eo "^\w+")
 
 	local user
-	user=$(echo "$remote_cfg" | grep -Eo "github.com.*\/" | sed s/github.com// | sed s:/::g | sed s/://)
+	user=$(echo "$remote_cfg" | grep -Eo "github.com.*\/" | sed -e s/github.com// -e s:/::g -e s/://)
 
 	local remote_url
 	remote_url=$(git remote get-url "$remote")
@@ -70,8 +70,8 @@ __main() {
 			patch_urls=$(echo "$resp" |\
 				python -m json.tool |\
 				grep -Eo '\"patch_url\":\s.*"' |\
-				sed s/\"patch_url\":\ // |\
-				sed s/\"//g)
+				sed -e s/\"patch_url\":\ // \
+				    -e s/\"//g)
 
 			mkdir -p "patches"
 
