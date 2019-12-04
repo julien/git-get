@@ -13,19 +13,25 @@ __main() {
 		preferred_remote="$GIT_GET_REMOTE"
 	fi
 
-	local remote
-	remote=$(git remote get-url "$preferred_remote")
+	local remotecfg
+	remotecfg=$(git remote -v | grep -Eo "$preferred_remote\s.*\(fetch\)")
 
-	if ! echo "$remote" | grep -Eo 'github.com' >/dev/null ; then
+	if ! echo "$remotecfg" | grep -Eo 'github.com' >/dev/null ; then
 		echo "fatal: remote doesn't seem to be a github.com project"
 		exit 1
 	fi
 
-	local remote_name
-	remote_name=$(git remote)
+	local remote
+	remote=$(echo "$remotecfg" | grep -Eo "^\w+")
 
-	local owner_repo
-	owner_repo=$(echo "$remote" | grep -Eo '(:)(.*\.git)' | sed s/:// | sed s/\.git$//)
+	local user
+	user=$(echo "$remotecfg" | grep -Eo "github.com.*\/" | sed s/github.com// | sed s:/::g | sed s/://)
+
+	local remote_url
+	remote_url=$(git remote get-url "$remote")
+
+	local project
+	project=$(basename "$remote_url" | sed s:\.git::)
 
 	local cmd=$1
 
@@ -42,7 +48,7 @@ __main() {
 				local branch
 				branch="pull/$number"
 
-				git fetch "$remote_name" "pull/$number/head:$branch"
+				git fetch "$remote" "pull/$number/head:$branch"
 				git checkout "$branch"
 			else
 				echo "fatal: \"$2\" is not a number"
@@ -51,7 +57,7 @@ __main() {
 			;;
 		patches)
 			local url
-			url="https://api.github.com/repos/$owner_repo/pulls"
+			url="https://api.github.com/repos/$user/$project/pulls"
 			local resp
 
 			if command -v curl >/dev/null ; then
@@ -93,13 +99,20 @@ __main() {
 			IFS=$OIFS
 			;;
 		ls)
-			local url="https://api.github.com/repos/$owner_repo/pulls"
+			local url="https://api.github.com/repos/$user/$project/pulls"
 			local resp
 
 			if command -v curl >/dev/null ; then
 				resp=$(curl -L -s -f "$url")
 			elif  command -v wget >/dev/null ; then
 				resp=$(wget --quiet -O - "$url")
+			fi
+
+			if [[ -z "$resp" ]]; then
+				echo
+				echo "no pull requests for $user/$project"
+				echo
+				exit 0
 			fi
 
 			local script
@@ -114,24 +127,18 @@ __main() {
 			prs=$(echo "$resp" | python -c "$script")
 
 			if [[ -n "$prs" ]]; then
-				echo "listing pull requests for $owner_repo"
+				echo "listing pull requests for $user/$project"
 				echo
 				echo "$prs"
 				echo
 			fi
 			;;
 		send)
-			local project
-			project=$(basename "$remote" ".${remote##*.}" )
-
-			local source
-			source=$(echo "$remote" | grep -Eo "(github.com)(:|\/+)(\w+)" | sed "s/github.com.//")
-
-			local target
+			local target_user
 			if [[ -z "$2" ]]; then
-				target=$source
+				target_user=$user
 			else
-				target=$2
+				target_user=$2
 			fi
 
 			local target_branch
@@ -144,23 +151,19 @@ __main() {
 			local branch
 			branch=$(git branch | grep "\*" | cut -d ' ' -f2)
 
-			local project_name
-			project_name=$(echo "$project" | sed "s/\w\+\///")
-
 			local url
-			url="https://github.com/$target/$project_name/compare/$target_branch...$source:$branch"
+			url="https://github.com/$target_user/$project/compare/$target_branch...$user:$branch"
 
 			if command -v open >/dev/null | grep -v "alias" ; then
 				open "$url"
 			elif  command -v xdg-open >/dev/null ; then
 				xdg-open "$url"
 			fi
-
 		;;
 		*)
-			__usage
-			exit 1
-			;;
+		__usage
+		exit 1
+		;;
 	esac
 }
 
