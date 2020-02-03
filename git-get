@@ -118,6 +118,8 @@ __main() {
 			local script
 			script=$(cat <<- EOF
 			import sys, json;
+			reload(sys)
+			sys.setdefaultencoding('utf-8')
 			ls = json.load(sys.stdin)
 			for l in ls: print('{0} {1}\n - {2}\n'.format(l['number'], l['title'], l['html_url']))
 			EOF
