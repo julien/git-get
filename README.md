@@ -3,7 +3,6 @@ git-get
 
 A simple script to handle github pull requests.
 
-
 ### Installation:
 
 - Clone this repo:
@@ -31,5 +30,4 @@ send [USER][BRANCH]    Open URL to create a pull request
 ### Limitations:
 
 Only works for github projects
-
 
