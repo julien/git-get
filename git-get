@@ -88,7 +88,7 @@ __main() {
 					if command -v curl >/dev/null ; then
 						curl "$x" -L -s -o "patches/$patch"
 					elif  command -v wget >/dev/null ; then
-						wget --quiet "$x" -o "patches/$patch"
+						wget --quiet "$x" -P "patches"
 					fi
 
 				else
