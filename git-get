@@ -119,7 +119,7 @@ __main() {
 			local html_urls
 			mapfile -t numbers < <(echo "$resp" | grep \"number\" | sed -e s/\"number\":// -e s/\"//g -e s/,//g -e s/^[[:space:]]*//g)
 			mapfile -t titles < <(echo "$resp" | grep \"title\" | sed -e s/\"title\":// -e s/\"//g -e s/,//g -e s/^[[:space:]]*//g)
-			mapfile -t html_urls < <(echo "$resp" | grep \"html_url\" | sed -e s/\"html_url\":// -e s/\"//g -e s/,//g -e s/^[[:space:]]*//g)
+			mapfile -t html_urls < <(echo "$resp" | sed -n -e 's/\"html_url\":[[:space:]]\"\(.*\/\)\([[:digit:]]\+\)\(\",$\)/\1\2/p')
 
 			if [[ ${#numbers[@]} -eq 0 ]]; then
 				exit 0
@@ -127,7 +127,7 @@ __main() {
 				echo "listing pull requests for $user/$project"
 				echo
 				for (( i=0; i < ${#numbers[@]}; i++ )); do
-					printf "%s %s\n - %s\n\n" "${numbers[i]}" "${titles[i]}" "${html_urls[i]}";
+					printf "%s %s\n%s\n\n" "${numbers[i]}" "${titles[i]}" "${html_urls[i]}";
 				done
 			fi
 			;;
