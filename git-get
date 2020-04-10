@@ -115,21 +115,21 @@ __main() {
 				exit 0
 			fi
 
-			local script
-			script=$(cat <<- EOF
-			import sys, json;
-			ls = json.load(sys.stdin)
-			for l in ls: print('{0} {1}\n - {2}\n'.format(l['number'], l['title'], l['html_url']))
-			EOF
-			)
+			local numbers
+			local titles
+			local html_urls
+			mapfile -t numbers < <(echo "$resp" | grep \"number\" | sed -e s/\"number\":// -e s/\"//g -e s/,//g)
+			mapfile -t titles < <(echo "$resp" | grep \"title\" | sed -e s/\"title\":// -e s/\"//g -e s/,//g)
+			mapfile -t html_urls < <(echo "$resp" | grep \"html_url\" | sed -e s/\"html_url\":// -e s/\"//g -e s/,//g)
 
-			local prs
-			prs=$(echo "$resp" | python3 -c "$script")
-
-			if [[ -n "$prs" ]]; then
+			if [[ ${#numbers[@]} -eq 0 ]]; then
+				exit 0
+			else
 				echo "listing pull requests for $user/$project"
 				echo
-				echo "$prs"
+				for (( i=0; i < ${#numbers[@]}; i++ )); do
+					printf "%s %s\n - %s" "${numbers[i]}" "${titles[i]}" "${html_urls[i]}";
+				done
 				echo
 			fi
 			;;
