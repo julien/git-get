@@ -68,7 +68,6 @@ __main() {
 
 			local patch_urls
 			patch_urls=$(echo "$resp" |\
-				python -m json.tool |\
 				grep -Eo '\"patch_url\":\s.*"' |\
 				sed -e s/\"patch_url\":\ // \
 				    -e s/\"//g)
