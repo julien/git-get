@@ -107,13 +107,6 @@ __main() {
 				resp=$(wget --quiet -O - "$url")
 			fi
 
-			if [[ -z "$resp" ]]; then
-				echo
-				echo "no pull requests for $user/$project"
-				echo
-				exit 0
-			fi
-
 			local numbers
 			local titles
 			local html_urls
@@ -122,6 +115,9 @@ __main() {
 			mapfile -t html_urls < <(echo "$resp" | sed -n -e 's/\"html_url\":[[:space:]]\"\(.*\/\)\([[:digit:]]\+\)\(\",$\)/\1\2/p')
 
 			if [[ ${#numbers[@]} -eq 0 ]]; then
+				echo
+				echo "no pull requests for $user/$project"
+				echo
 				exit 0
 			else
 				echo "listing pull requests for $user/$project"
