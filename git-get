@@ -128,9 +128,8 @@ __main() {
 				echo "listing pull requests for $user/$project"
 				echo
 				for (( i=0; i < ${#numbers[@]}; i++ )); do
-					printf "%s %s\n - %s" "${numbers[i]}" "${titles[i]}" "${html_urls[i]}";
+					printf "%s %s\n - %s\n\n" "${numbers[i]}" "${titles[i]}" "${html_urls[i]}";
 				done
-				echo
 			fi
 			;;
 		send)
