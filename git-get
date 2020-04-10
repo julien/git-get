@@ -118,9 +118,9 @@ __main() {
 			local numbers
 			local titles
 			local html_urls
-			mapfile -t numbers < <(echo "$resp" | grep \"number\" | sed -e s/\"number\":// -e s/\"//g -e s/,//g)
-			mapfile -t titles < <(echo "$resp" | grep \"title\" | sed -e s/\"title\":// -e s/\"//g -e s/,//g)
-			mapfile -t html_urls < <(echo "$resp" | grep \"html_url\" | sed -e s/\"html_url\":// -e s/\"//g -e s/,//g)
+			mapfile -t numbers < <(echo "$resp" | grep \"number\" | sed -e s/\"number\":// -e s/\"//g -e s/,//g -e s/^[[:space:]]*//g)
+			mapfile -t titles < <(echo "$resp" | grep \"title\" | sed -e s/\"title\":// -e s/\"//g -e s/,//g -e s/^[[:space:]]*//g)
+			mapfile -t html_urls < <(echo "$resp" | grep \"html_url\" | sed -e s/\"html_url\":// -e s/\"//g -e s/,//g -e s/^[[:space:]]*//g)
 
 			if [[ ${#numbers[@]} -eq 0 ]]; then
 				exit 0
