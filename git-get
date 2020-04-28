@@ -48,7 +48,7 @@ __main() {
 				local branch
 				branch="pull/$number"
 
-				git fetch "$remote" "pull/$number/head:$branch"
+				git fetch --update-head-ok "$remote" +"pull/$number/head:$branch"
 				git checkout "$branch"
 			else
 				echo "fatal: \"$2\" is not a number"
