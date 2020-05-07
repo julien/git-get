@@ -1,7 +1,7 @@
 git-get
 ---
 
-A simple script to handle github pull requests.
+A simple script to handle GitHub pull requests.
 
 
 ### Installation:
@@ -28,8 +28,24 @@ patches                Download patches
 send [USER][BRANCH]    Open URL to create a pull request
 ```
 
+### Alternatives:
+
+If you just care about fetching pull requests, you can add this alias in
+your `.gitconfig`
+
+```gitconfig
+[alias]
+	# ... your stuff
+
+	# fetch a pr from github: git gh REMOTE NUMBER
+	# (i.e. git gh origin 42)
+	gh = "!f() {  git fetch --update-head-ok $1 +\"pull/$2/head:pull/$2\";  }; f"
+```
+
+Obviously, this is more limited but it works
+
 ### Limitations:
 
-Only works for github projects
+Only works for GitHub projects
 
 
