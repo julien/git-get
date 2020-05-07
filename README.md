@@ -62,5 +62,3 @@ Obviously, this is more limited but it works
 ### Limitations:
 
 Only works for GitHub projects
-
-
