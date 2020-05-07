@@ -13,11 +13,10 @@ a plethora of features, but I just care about a few things:
 - Getting the patches for a pull request (if I'm really feeling confident)
 - Sending a PR
 
-These are trivial and daily operations that I execute various times daily, and
-while everything is possible with git and a browser I thought automating some of
-these tasks might be worth it, after trying similar tools, but I didn't want to
-depend on anything else than a shell script and git to do all of this,
-which explains why the "code" is what it is.
+These are trivial operations that can all be done with git
+and a browser but automating them can save time. I also didn't
+want to depend on anything else than a shell script and git
+to do all of this, which explains why the "code" is what it is.
 
 ### Installation:
 
