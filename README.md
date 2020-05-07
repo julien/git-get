@@ -3,6 +3,21 @@ git-get
 
 A simple script to handle GitHub pull requests.
 
+### Why?
+
+There are lots of tools built around git and GitHub. They're all pretty and have
+a plethora of features, but I just care about a few things:
+
+- Listing pull requests
+- Fetching a pull request branch
+- Getting the patches for a pull request (if I'm really feeling confident)
+- Sending a PR
+
+These are trivial and daily operations that I execute various times daily, and
+while everything is possible with git and a browser I thought automating some of
+these tasks might be worth it, after trying similar tools, but I didn't want to
+depend on anything else than a shell script and git to do all of this,
+which explains why the "code" is what it is.
 
 ### Installation:
 
