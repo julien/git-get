@@ -10,7 +10,7 @@ a plethora of features, but I just care about a few things:
 
 - Listing pull requests
 - Fetching a pull request branch
-- Getting the patches for a pull request (if I'm really feeling confident)
+- Getting the patches for a pull request
 - Sending a PR
 
 These are trivial operations that can all be done with git
