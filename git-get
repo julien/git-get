@@ -22,7 +22,7 @@ __main() {
 	fi
 
 	local remote
-	remote=$(echo "$remote_cfg" | grep -Eo "^\w+")
+	remote=$(echo "$remote_cfg" | grep -Eo -m 1 "^\b(\w+)(\-|_)*(\w+)\b")
 
 	local user
 	user=$(echo "$remote_cfg" | grep -Eo "github.com.*\/" | sed -e s/github.com// -e s:/::g -e s/://)
