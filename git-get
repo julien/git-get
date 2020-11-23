@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-set -o errexit
-set -o pipefail
+set -e
 
 __main() {
 	if [[ $# -lt 1 ]] ; then
@@ -148,7 +147,7 @@ __main() {
 			local url
 			url="https://github.com/$target_user/$project/compare/$target_branch...$user:$branch"
 
-			if command -v open >/dev/null | grep -v "alias" ; then
+			if command -v open | tee /dev/null | grep -v "alias" ; then
 				open "$url"
 			elif  command -v xdg-open >/dev/null ; then
 				xdg-open "$url"
@@ -175,4 +174,3 @@ __usage() {
 }
 
 __main "$@"
-
