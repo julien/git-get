@@ -1,7 +1,7 @@
 git-get
 ---
 
-A simple script to handle GitHub pull requests.
+A bash script to handle GitHub pull requests.
 
 ### Why?
 
@@ -14,19 +14,20 @@ a plethora of features, but I just care about a few things:
 - Sending a PR
 
 These are trivial operations that can all be done with git
-and a browser but automating them can save time. I also didn't
-want to depend on anything else than a shell script and git
+and a browser but automating them can save time. 
+
+I also didn't want to depend on anything else than a shell script and git
 to do all of this, which explains why the "code" is what it is.
 
 ### Installation:
 
-- Clone this repo:
+Clone this repository:
 
 ```sh
 git clone https://github.com/julien/git-get.git
 ```
 
-- As long as the `git-get` script is in your `$PATH`, you'll be able to
+As long as the `git-get` script is in your `$PATH`, you'll be able to
 invoke `git get` inside a `.git` repository
 
 ### Usage:
@@ -44,7 +45,7 @@ send [USER][BRANCH]    Open URL to create a pull request
 
 ### Alternatives:
 
-If you just care about fetching pull requests, you can add this alias in
+If you just need to fetch pull requests, you can add this alias in
 your `.gitconfig`
 
 ```gitconfig
@@ -56,7 +57,7 @@ your `.gitconfig`
 	gh = "!f() {  git fetch --update-head-ok $1 +\"pull/$2/head:pull/$2\";  }; f"
 ```
 
-Obviously, this is more limited but it works
+Obviously, this is more limited but it works.
 
 ### Limitations:
 
